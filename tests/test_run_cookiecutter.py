@@ -54,9 +54,11 @@ def test_run_cookiecutter_template_packages_pass_tests():
         for templatedir in (directory / "templates").iterdir():
             if templatedir.is_dir():
                 run(
-                    ["pytest", "tests"],
+                    f". {directory / 'setup.sh'} && pytest tests",
                     check=True,
                     cwd=templatedir,
+                    shell=True,
+                    executable=shutil.which("bash"),
                 )
 
 
@@ -81,6 +83,9 @@ def test_run_cookiecutter_posix_shell_fails():
 )
 def test_run_cookiecutter_conda_and_shells(shell_and_use_conda: Tuple[str, str]):
     (shell, use_conda) = shell_and_use_conda
+    if shutil.which(shell) is None:
+        # skip test if shell is not ignored
+        return
     with TemporaryDirectory() as tmpdir:
         directory = _run_cookiecutter(Path(tmpdir), {"use_conda": use_conda})
         assert directory.exists()
