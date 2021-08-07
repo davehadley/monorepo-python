@@ -1,0 +1,10 @@
+{
+    "full_name": "David Hadley",
+    "email": "davehadley@users.noreply.github.com",
+    "project_name": "example-monorepo-python",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+    "use_conda": ["y", "n"],
+    "_copy_without_render": [
+      "templates/*"
+    ]
+  }
