@@ -1,5 +1,9 @@
 # monorepo-python
 
+[![Main Build status](https://img.shields.io/github/workflow/status/davehadley/monorepo-python/ci/main?label=main)](https://github.com/davehadley/monorepo-python/tree/main)
+[![Develop Build status](https://img.shields.io/github/workflow/status/davehadley/monorepo-python/ci/develop?label=develop)](https://github.com/davehadley/monorepo-python/tree/develop)
+[![Last commit](https://img.shields.io/github/last-commit/davehadley/monorepo-python/develop)](https://github.com/davehadley/monorepo-python/tree/develop)
+
 A [cookiecutter](https://github.com/cookiecutter/cookiecutter) template for a 
 monorepo containing several python packages. This repository structure is partially inspired by this [medium post](https://medium.com/opendoor-labs/our-python-monorepo-d34028f2b6fa).
 
