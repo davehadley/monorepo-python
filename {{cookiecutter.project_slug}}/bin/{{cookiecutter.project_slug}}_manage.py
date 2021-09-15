@@ -7,6 +7,7 @@ from subprocess import run
 from typing import Callable, Iterable
 
 _has_run_tests = False
+_subpackages_directory_name = "lib"
 
 
 def _main():
@@ -17,12 +18,19 @@ def _main():
 def _parseargs() -> Namespace:
     parser = ArgumentParser()
     subparsers = parser.add_subparsers(help="choose which task to run")
-    for verb, func, verbhelp in [
-        ("build", _build, "Build packages"),
-        ("test", _test, "Test packages"),
-        ("install", _install, "Install packages"),
+    for verb, func, verbhelp, extrargs, aliases in [
+        ("build", _build, "Build packages", None, ["b"]),
+        ("test", _test, "Test packages", None, ["t"]),
+        ("install", _install, "Install packages", None, ["i"]),
+        (
+            "broadcast",
+            _broadcast,
+            "Run a command in all packages",
+            _setbroadcastargs,
+            ["bro"],
+        ),
     ]:
-        verbparser = subparsers.add_parser(verb, help=verbhelp)
+        verbparser = subparsers.add_parser(verb, help=verbhelp, aliases=aliases)
         verbparser.add_argument(
             "packagename",
             nargs="*",
@@ -30,13 +38,15 @@ def _parseargs() -> Namespace:
             default=None,
             help="Name of packages to include. If none set, all packages will be included.",
         )
+        if extrargs:
+            extrargs(verbparser)
         verbparser.set_defaults(func=func)
     return parser.parse_args()
 
 
-def _test(args: Namespace):
+def _test(args: Namespace) -> None:
     packagefilter = _package_filter_from_names(args.packagename)
-    packages = Path(__file__).parent.parent / "lib"
+    packages = Path(__file__).parent.parent / _subpackages_directory_name
     for packagedir in sorted(packages.iterdir()):
         if packagedir.is_dir() and packagefilter(packagedir):
             _run_poetry_tests(packagedir)
@@ -46,21 +56,38 @@ def _test(args: Namespace):
     return
 
 
-def _build(args: Namespace):
+def _build(args: Namespace) -> None:
     packagefilter = _package_filter_from_names(args.packagename)
-    packages = Path(__file__).parent.parent / "lib"
+    packages = Path(__file__).parent.parent / _subpackages_directory_name
     for packagedir in sorted(packages.iterdir()):
         if packagedir.is_dir() and packagefilter(packagedir):
             _run_poetry_build(packagedir)
     return
 
 
-def _install(args: Namespace):
+def _install(args: Namespace) -> None:
     packagefilter = _package_filter_from_names(args.packagename)
-    packages = Path(__file__).parent.parent / "lib"
+    packages = Path(__file__).parent.parent / _subpackages_directory_name
     for packagedir in sorted(packages.iterdir()):
         if packagedir.is_dir() and packagefilter(packagedir):
             _run_pip_install(packagedir)
+    return
+
+
+def _setbroadcastargs(parser: ArgumentParser) -> None:
+    parser.add_argument(
+        "command", help="Shell command to be run inside each sub-package.", type=str
+    )
+    return
+
+
+def _broadcast(args: Namespace) -> None:
+    packagefilter = _package_filter_from_names(args.packagename)
+    packages = Path(__file__).parent.parent / _subpackages_directory_name
+    for packagedir in sorted(packages.iterdir()):
+        if packagedir.is_dir() and packagefilter(packagedir):
+            print(f'---- Running "{args.command}" in {packagedir}')
+            run(args.command, cwd=packagedir, check=True, shell=True)
     return
 
 

@@ -25,3 +25,9 @@ then
 fi
 
 source ${SCRIPT_PATH}/env/bin/activate
+
+# Install pre-commit hooks if they have not already been installed
+if test -d "${SCRIPT_PATH}/.git" && ! test -f "${SCRIPT_PATH}/.git/hooks/pre-commit";
+then
+    (cd ${SCRIPT_PATH}; pre-commit install)
+fi

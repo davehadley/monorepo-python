@@ -2,9 +2,11 @@
 
 ## Environment Setup
 
-Run `source setup.sh`.
+Run `source setup.sh` to setup the development environment.
+This may be slow the first time that this is run as the virtual environment is created
+and dependencies are installed.
 
-## Creating an New Package
+## Creating an New Library
 
 New packages are created with the cookiecutter templates in the templates directory.
 For example, to create a new python package,
@@ -20,7 +22,7 @@ from the within the package directory.
 Build all packages with:
 
 ```
-cookiecutter.slug_name_manage.py build
+{{cookiecutter.project_slug}}_manage.py build
 ```
 
 Run all package tests with:
@@ -31,6 +33,3 @@ Run all package tests with:
 
 See `{{cookiecutter.project_slug}}_manage.py --help` for more information. 
 
-## Development Instructions
-
-Please run `pre-commit install` before starting any development work.

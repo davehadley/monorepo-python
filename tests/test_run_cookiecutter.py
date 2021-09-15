@@ -39,7 +39,8 @@ def test_run_cookiecutter_python_template():
             && cookiecutter {templatepythondir} --output-dir {examplepythondir.resolve()} --no-input \\
             && example_monorepo_python_manage.py build \\
             && example_monorepo_python_manage.py test \\
-            && example_monorepo_python_manage.py install
+            && example_monorepo_python_manage.py install \\
+            && example_monorepo_python_manage.py broadcast touch pyproject.toml
             """,
             check=True,
             shell=True,
