@@ -45,7 +45,7 @@ then
         && conda config --set env_prompt '({name}) ' \
         && conda update -q conda \
         && conda install mamba -c conda-forge \
-        && rm miniconda.sh
+        && rm -f miniconda.sh
     fi
     . ${{ cookiecutter.project_slug.upper() }}MINICONDA/bin/activate
     if ! command -v ${CONDA} &> /dev/null

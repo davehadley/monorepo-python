@@ -6,6 +6,7 @@ repos:
   rev: 5.9.3
   hooks:
     - id: isort
+      args: ["--profile", "black"]
       stages: [ commit ]
 
 - repo: https://github.com/ambv/black
@@ -14,29 +15,29 @@ repos:
   - id: black
     language_version: python3.8
     stages: [commit]
-    exclude: ^.*/templates/.*$
+    exclude: ^.*templates/.*$
 
 - repo:  https://gitlab.com/pycqa/flake8
   rev: 3.9.2
   hooks:
     - id: flake8
       stages: [commit]
-      exclude: ^.*/templates/.*$
+      exclude: ^.*templates/.*$
 
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: v0.910
   hooks:
     - id: mypy
-      exclude: ^.*/templates/.*$
+      exclude: ^.*templates/.*$
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.0.1
   hooks:
     - id: check-added-large-files
     - id: check-ast
-      exclude: ^.*/templates/.*$
+      exclude: ^.*templates/.*$
     - id: check-merge-conflict
     - id: check-toml
-      exclude: ^.*/templates/.*$
+      exclude: ^.*templates/.*$
     - id: mixed-line-ending
       stages: [commit]
