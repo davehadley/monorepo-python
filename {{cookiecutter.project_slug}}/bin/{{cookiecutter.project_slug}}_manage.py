@@ -31,6 +31,8 @@ def _parseargs() -> Namespace:
         ),
     ]:
         verbparser = subparsers.add_parser(verb, help=verbhelp, aliases=aliases)
+        if extrargs:
+            extrargs(verbparser)
         verbparser.add_argument(
             "packagename",
             nargs="*",
@@ -38,8 +40,6 @@ def _parseargs() -> Namespace:
             default=None,
             help="Name of packages to include. If none set, all packages will be included.",
         )
-        if extrargs:
-            extrargs(verbparser)
         verbparser.set_defaults(func=func)
     return parser.parse_args()
 
