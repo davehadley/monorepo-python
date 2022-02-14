@@ -31,5 +31,10 @@ Run all package tests with:
 {{cookiecutter.project_slug}}_manage.py test
 ```
 
-See `{{cookiecutter.project_slug}}_manage.py --help` for more information. 
+To run an arbitrary shell command inside each sub-package run:
 
+```
+{{cookiecutter.project_slug}}_manage.py broadcast "echo Your shell command"
+```
+
+See `{{cookiecutter.project_slug}}_manage.py --help` for more information. 
